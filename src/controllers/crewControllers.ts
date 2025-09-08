@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { createUser, getUserByCognitoId, updateUser } from "../data-access/user";
 
 export const getCrew = async (
   req: Request,
@@ -6,7 +7,7 @@ export const getCrew = async (
 ): Promise<void> => {
   try {
     const { cognitoId } = req.params;
-    const crew = {}; // get from db
+    const crew = await getUserByCognitoId(cognitoId);
 
     if (crew) {
       res.json(crew);
@@ -25,9 +26,13 @@ export const createCrew = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { cognitoId, name, email, phoneNumber } = req.body;
+    const { cognitoId, name, email } = req.body;
 
-    const crew = {}; // create in db
+    const crew = await createUser({
+      cognitoId,
+      name,
+      email,
+    });
 
     res.status(201).json(crew);
   } catch (error: any) {
@@ -43,9 +48,17 @@ export const updateCrew = async (
 ): Promise<void> => {
   try {
     const { cognitoId } = req.params;
-    const { name, email, phoneNumber } = req.body;
+    const { name, email, image } = req.body;
 
-    const crew = {}; // update in db
+    const crew = await updateUser(
+      cognitoId,
+      {
+        name,
+        email,
+        image,
+        updatedAt: new Date()
+      }
+    );
 
     res.json(crew);
   } catch (error: any) {
