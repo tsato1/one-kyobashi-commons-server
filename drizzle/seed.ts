@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { db } from "./index";
-import { events } from "./schema";
+import { db } from "../src/db/index";
+import { events, NewEvent } from "../src/db/schema";
 
 async function main() {
   const eventData = [
@@ -12,7 +12,7 @@ async function main() {
     }
   ];
 
-  const createdEvents = [];
+  const createdEvents: NewEvent[] = [];
   for (const event of eventData) {
     const [createdEvent] = await db
       .insert(events)

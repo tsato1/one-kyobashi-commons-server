@@ -9,7 +9,7 @@ export const events = pgTable("event", {
 export type Event = InferSelectModel<typeof events>;
 export type NewEvent = InferInsertModel<typeof events>;
 
-export const users = pgTable("user", {
+export const users = pgTable("user_data", {
   id: uuid("id").primaryKey().defaultRandom(),
   cognitoId: varchar("cognitoId").notNull(),
   name: varchar("name", { length: 255 }).notNull(),
