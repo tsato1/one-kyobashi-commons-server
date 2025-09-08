@@ -6,6 +6,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 import serverless from "serverless-http"
 import eventRoutes from "./routes/eventRoutes";
+import crewRoutes from "./routes/crewRoutes";
+import trusteeRoutes from "./routes/trusteeRoutes";
+import { authMiddleware } from "./authMiddleware";
 
 dotenv.config();
 
@@ -24,6 +27,8 @@ app.get("/", (req, res) => {
   res.send("Hello!\n");
 });
 app.use("/events", eventRoutes);
+app.use("/crews", authMiddleware(["crew"]), crewRoutes);
+app.use("/trustees", authMiddleware(["trustee"]), trusteeRoutes);
 
 const port = process.env.PORT || 3001;
 if (!isProduction) {
