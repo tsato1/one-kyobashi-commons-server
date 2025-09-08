@@ -9,8 +9,8 @@ export const getTrustee = async (
     const { cognitoId } = req.params;
     const trustee = await getUserByCognitoId(cognitoId);
 
-    if (trustee) {
-      res.json(trustee);
+    if (trustee.length === 1) {
+      res.json(trustee[0]);
     } else {
       res.status(404).json({ message: "Trustee not found" });
     }

@@ -9,8 +9,8 @@ export const getCrew = async (
     const { cognitoId } = req.params;
     const crew = await getUserByCognitoId(cognitoId);
 
-    if (crew) {
-      res.json(crew);
+    if (crew.length === 1) {
+      res.json(crew[0]);
     } else {
       res.status(404).json({ message: "Crew not found" });
     }
