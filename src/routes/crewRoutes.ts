@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.get("/:cognitoId", getCrew);
-router.put("/:cognitoId", updateCrew);
+router.patch("/:cognitoId", updateCrew);
 router.post("/", createCrew);
 
 export default router;

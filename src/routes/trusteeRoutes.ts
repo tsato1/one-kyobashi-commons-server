@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.get("/:cognitoId", getTrustee);
-router.put("/:cognitoId", updateTrustee);
+router.patch("/:cognitoId", updateTrustee);
 router.post("/", createTrustee);
 
 export default router;

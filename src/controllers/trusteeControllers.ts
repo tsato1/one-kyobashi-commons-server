@@ -50,6 +50,9 @@ export const updateTrustee = async (
     const { cognitoId } = req.params;
     const { name, email, image } = req.body;
 
+    // todo: validate inputs
+    // todo: update cognito
+
     const trustee = await updateUser(
       cognitoId,
       {
