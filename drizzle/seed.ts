@@ -5,10 +5,16 @@ import { events, NewEvent } from "../src/db/schema";
 async function main() {
   const eventData = [
     {
-      name: "Sample event 1"
+      name: "サンプルイベント１",
+      description: "イベント１の詳細"
     },
     {
-      name: "Sample event 2"
+      name: "サンプルイベント２",
+      description: "イベント２の詳細"
+    },
+    {
+      name: "サンプルイベント３",
+      description: "イベント３の詳細"
     }
   ];
 
