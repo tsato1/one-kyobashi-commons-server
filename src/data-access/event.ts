@@ -10,11 +10,15 @@ export const getEvents = async () =>
     })
     .from(events);
 
-export const getEventById = async (id: string) =>
-  await db
+export const getEventById = async (id: string) => {
+  const rows = await db
     .select()
     .from(events)
-    .where(eq(events.id, id));
+    .where(eq(events.id, id))
+    .limit(1);
+
+  return rows[0] ?? null;
+}
 
 export const createEvent = async (newEvent: NewEvent) =>
   await db

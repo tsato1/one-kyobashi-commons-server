@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validate as uuidValidate } from "uuid";
 import { getEvents, getEventById, createEvent, updateEvent, deleteEvent } from "../data-access/event";
 import { createEventSchema, updateEventSchema } from "../schemas/eventSchema";
 
@@ -24,7 +25,16 @@ export const getEventByIdController = async (
   try {
     const { id } = req.params;
 
+    if (!uuidValidate(id)) {
+      res.status(400).json({ message: "Invalid event ID format" });
+      return;
+    }
+
     const out = await getEventById(id)
+    if (!out) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
 
     res.json(out);
   } catch (error: any) {
