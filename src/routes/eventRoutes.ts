@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+import { authMiddleware } from "../authMiddleware";
 import {
   getEventsController,
   getEventByIdController,
@@ -6,14 +8,16 @@ import {
   updateEventController,
   deleteEventController,
 } from "../controllers/eventControllers";
-import { authMiddleware } from "../authMiddleware";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
 router.get("/", getEventsController);
 router.get("/:id", getEventByIdController);
-router.post("/", authMiddleware(["admin", "trustee", "crew"]), createEventController);
-router.patch("/:id", authMiddleware(["admin", "trustee", "crew"]), updateEventController);
-router.delete("/:id", authMiddleware(["admin", "trustee", "crew"]), deleteEventController);
+router.post("/", authMiddleware(["crew"]), upload.none(), createEventController);
+router.patch("/:id", authMiddleware(["crew"]), updateEventController);
+router.delete("/:id", authMiddleware(["crew"]), deleteEventController);
 
 export default router;

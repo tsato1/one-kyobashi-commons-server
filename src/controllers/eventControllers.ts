@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { validate as uuidValidate } from "uuid";
 import { getEvents, getEventById, createEvent, updateEvent, deleteEvent } from "../data-access/event";
+import { EventStatus, NewEvent } from "../db/schema";
 import { createEventSchema, updateEventSchema } from "../schemas/eventSchema";
 
 export const getEventsController = async (
@@ -51,11 +52,16 @@ export const createEventController = async (
   try {
     const result = createEventSchema.safeParse(req.body);
     if (!result.success) {
-      res.status(400).json({ errors: result.error.flatten() });
+      res.status(400).json({ errors: result.error.issues.map(i => i.message) });
       return;
     }
 
-    const createdEvent = await createEvent(result.data);
+    const eventToCreate = {
+      ...result.data,
+      status: "Draft" as EventStatus,
+    } as NewEvent;
+
+    const createdEvent = await createEvent(eventToCreate);
     if (!createdEvent) {
       res.status(404).json({ error: "Failed to create a new event." });
       return;

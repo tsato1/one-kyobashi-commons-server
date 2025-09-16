@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUser, getUserByCognitoId, updateUser } from "../data-access/user";
+import { create, getTrusteeByCognitoId, update } from "../data-access/trustee";
 
 export const getTrustee = async (
   req: Request,
@@ -7,7 +7,7 @@ export const getTrustee = async (
 ): Promise<void> => {
   try {
     const { cognitoId } = req.params;
-    const trustee = await getUserByCognitoId(cognitoId);
+    const trustee = await getTrusteeByCognitoId(cognitoId);
 
     if (trustee.length === 1) {
       res.json(trustee[0]);
@@ -28,7 +28,7 @@ export const createTrustee = async (
   try {
     const { cognitoId, name, email } = req.body;
 
-    const trustee = await createUser({
+    const trustee = await create({
       cognitoId,
       name,
       email,
@@ -53,13 +53,12 @@ export const updateTrustee = async (
     // todo: validate inputs
     // todo: update cognito
 
-    const trustee = await updateUser(
+    const trustee = await update(
       cognitoId,
       {
         name,
-        email,
+        email, // todo: email update here? update cognito too
         image,
-        updatedAt: new Date()
       }
     );
 
