@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -37,6 +37,19 @@ app.get("/", (req, res) => {
 app.use("/events", eventRoutes);
 app.use("/crews", authMiddleware(["crew"]), crewRoutes);
 app.use("/trustees", authMiddleware(["trustee"]), trusteeRoutes);
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error("Unhandled error:", err);
+
+  // If headers already sent, delegate to default Express error handler
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(500).json({
+    message: "Internal Server Error",
+    detail: err.message
+  });
+});
 
 const port = process.env.PORT || 3001;
 if (!isProduction) {

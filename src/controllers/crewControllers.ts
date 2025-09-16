@@ -7,6 +7,8 @@ export const getCrew = async (
 ): Promise<void> => {
   try {
     const { cognitoId } = req.params;
+    console.log("req.params:", req.params);
+
     const crew = await getCrewByCognitoId(cognitoId);
 
     if (crew.length === 1) {
@@ -15,6 +17,7 @@ export const getCrew = async (
       res.status(404).json({ message: "Crew not found" });
     }
   } catch (error: any) {
+    console.error("Error in getCrew:", error);
     res
       .status(500)
       .json({ message: `Error retrieving crew: ${error.message}` });
