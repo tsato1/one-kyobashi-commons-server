@@ -25,8 +25,12 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json()); todo: should be removable.
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use((req, res, next) => {
+  console.log("Request Origin:", req.headers.origin);
+  next();
+});
 app.get("/", (req, res) => {
   res.send("Hello!\n");
 });
