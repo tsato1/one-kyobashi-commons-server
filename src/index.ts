@@ -25,7 +25,7 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN,
   credentials: true,
 }))
-app.options('*', cors());
+app.options('/*wildcard', cors());
 app.get("/", (req, res) => {
   res.send("Hello!\n");
 });
