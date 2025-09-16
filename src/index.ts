@@ -24,8 +24,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
   credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }))
-app.options('/*wildcard', cors());
 app.get("/", (req, res) => {
   res.send("Hello!\n");
 });
