@@ -18,8 +18,8 @@
   "dependencies": {
     "@types/multer": "^2.0.0",
     "@types/pg": "^8.15.5",
+    "aws-jwt-verify": "^5.1.0",
     "aws-sdk": "^2.1692.0",
-    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "drizzle-orm": "^0.44.5",

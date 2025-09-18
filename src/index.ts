@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -25,19 +24,13 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-// app.use(bodyParser.json()); todo: should be removable.
-// app.use(bodyParser.urlencoded({ extended: false }));
-app.use((req, res, next) => {
-  console.log("Request Origin:", req.headers.origin);
-  next();
-});
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("Hello!\n");
 });
 app.use("/events", eventRoutes);
 app.use("/crews", authMiddleware(["crew"]), crewRoutes);
 app.use("/trustees", authMiddleware(["trustee"]), trusteeRoutes);
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
   console.error("Unhandled error:", err);
 
   // If headers already sent, delegate to default Express error handler
