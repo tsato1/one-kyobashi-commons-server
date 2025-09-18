@@ -48,8 +48,3 @@ export const createEventSchema = z.object({
 });
 
 export const updateEventSchema = createEventSchema.partial();
-
-/** todo: meetings table
- * visibility: z.enum(["Public", "Private"]).optional().default("Public"),
- * allowedRoles: z.array(z.enum(["Crew", "Trustee"])).optional().default([]),
- */

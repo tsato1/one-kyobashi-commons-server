@@ -5,6 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import serverless from "serverless-http"
 import eventRoutes from "./routes/eventRoutes";
+import meetingRoutes from "./routes/meetingRoutes";
 import crewRoutes from "./routes/crewRoutes";
 import trusteeRoutes from "./routes/trusteeRoutes";
 import { authMiddleware } from "./authMiddleware";
@@ -28,6 +29,7 @@ app.get("/", (_req, res) => {
   res.send("Hello!\n");
 });
 app.use("/events", eventRoutes);
+app.use("/meetings", meetingRoutes);
 app.use("/crews", authMiddleware(["crew"]), crewRoutes);
 app.use("/trustees", authMiddleware(["trustee"]), trusteeRoutes);
 app.use((err: any, _req: Request, res: Response, next: NextFunction) => {

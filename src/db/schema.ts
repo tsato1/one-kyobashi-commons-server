@@ -108,13 +108,6 @@ export const eventStatusEnum = pgEnum("eventStatus", [
 
 export type EventStatus = (typeof eventStatusEnum.enumValues)[number];
 
-export const visibilityEnum = pgEnum("visibility", [
-  "Public",
-  "Private",
-]);
-
-export type Visibility = (typeof visibilityEnum.enumValues)[number];
-
 export const events = pgTable("event", {
   id: uuid("id").primaryKey().defaultRandom(),
   status: eventStatusEnum("status"),
@@ -143,8 +136,27 @@ export const eventsRelations = relations(events, ({ one }) => ({
   })
 }));
 
-/**
- * todo: meetings table
+/*****************************************************************************************************
+ * Event related types and table definition
+ *****************************************************************************************************/
+export const visibilityEnum = pgEnum("visibility", [
+  "Public",
+  "Private",
+]);
+
+export type Visibility = (typeof visibilityEnum.enumValues)[number];
+
+export const meetings = pgTable("meeting", {
+  id: uuid("id").primaryKey().defaultRandom(),
   visibility: visibilityEnum("visibility").notNull(),
+  startDate: timestamp("start_date", { withTimezone: true, mode: "date" }),
+  endDate: timestamp("end_date", { withTimezone: true, mode: "date" }),
+  description: text("description"),
+  location: text("location").notNull(),
   allowedRoles: text("allowed_roles").array().$type<("Crew" | "Trustee")[]>(),
- */
+  createdBy: text("created_by").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+export type Meeting = InferSelectModel<typeof meetings>;
+export type NewMeeting = InferInsertModel<typeof meetings>;
